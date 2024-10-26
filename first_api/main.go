@@ -20,7 +20,7 @@ var usuarios = []Usuario{
 }
 
 // Função para lidar com a rota principal (GET /usuarios)
-func getUsuarios(w http.ResponseWriter, r *http.Request) {
+func getUsuarios(w http.ResponseWriter, _ *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(usuarios)
 }
@@ -48,13 +48,20 @@ func createUsuario(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(usuario)
 }
 
-func handlerHttp(w http.ResponseWriter, r *http.Request) {
-	if r.Method == http.MethodGet {
-		getUsuarios(w, r)
-	} else if r.Method == http.MethodPost {
-		createUsuario(w, r)
+// Função para lidar com a remoção de um usuário (DELETE /usuarios/:id)
+func deleteUsuario(w http.ResponseWriter, r *http.Request) {
+
+}
+
+func handlerHttp(response http.ResponseWriter, request *http.Request) {
+	if request.Method == http.MethodGet {
+		getUsuarios(response, request)
+	} else if request.Method == http.MethodPost {
+		createUsuario(response, request)
+	} else if request.Method == http.MethodDelete {
+		deleteUsuario(response, request)
 	} else {
-		http.Error(w, "Método não permitido", http.StatusMethodNotAllowed)
+		http.Error(response, "Método não permitido", http.StatusMethodNotAllowed)
 	}
 }
 
